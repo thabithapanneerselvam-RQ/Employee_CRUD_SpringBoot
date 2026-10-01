@@ -1,6 +1,7 @@
 package com.example.employee.controller;
 
 import com.example.employee.Employee;
+import com.example.employee.EmployeeNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ public class EmployeeController {
         return employees.stream()
                 .filter(employee -> employee.getEmpId() == id)
                 .findFirst()
-                .orElse(null);
+                .orElseThrow(() -> new EmployeeNotFoundException("Employee not found with id: " + id));
     }
 
     @PutMapping("/{id}")
@@ -43,7 +44,7 @@ public class EmployeeController {
         Employee employee = employees.stream()
                 .filter(emp -> emp.getEmpId() == id)
                 .findFirst()
-                .orElse(null);
+                .orElseThrow(() -> new EmployeeNotFoundException("Employee not found with id: " + id));
 
         if (employee != null) {
             employee.setEmpName(updatedEmployee.getEmpName());
